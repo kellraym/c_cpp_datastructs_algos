@@ -1,32 +1,5 @@
 #include <stdio.h>
 
-int summation(int n)
-{
-    if (n == 1)
-    {
-        return 1;
-    }
-
-    return n + summation(n - 1);
-}
-
-int factorial(int n)
-{
-    if(n == 0)
-    {
-        return 1;
-    }
-
-    return n * factorial(n - 1);
-}
-
-int power(int n, int p)
-{
-    if (p == 0) return 1;
-    if (p % 2 == 0) return power(n * n, p / 2);
-    return power(n * n, (p - 1) / 2) * n;
-}
-
 double e(int x, int n)
 {
     static double p = 1, f = 1;
@@ -39,8 +12,29 @@ double e(int x, int n)
     return r + p / f;
 }
 
+double e_horners(int x, int n)
+{
+    double s = 1;
+    for (;n > 0; n--)
+    {
+        s = 1 + x / (double) n * s;
+    }
+
+    return s;
+}
+
+double e_horners_recursive(int x, int n)
+{
+    static int s = 1;
+
+    if (n == 0) return s;
+
+    s = 1 + x / (double) n * s;
+    return e(x, n - 1);
+}
+
 int main()
 {
-    printf("%d %d %d %f", summation(5), factorial(5), power(2, 9), e(2, 3));
+    printf("%lf %lf", e(2, 3), e_horners(2, 3));
     return 0;
 }
